@@ -6,13 +6,13 @@ const expressHandlebars  = require('express-handlebars')
 const homeRoutes = require('./routes/home')
 const cartRoutes = require('./routes/cart')
 const addRoutes = require('./routes/add')
+const orderRoutes = require('./routes/order')
 const coursesRoutes = require('./routes/courses')
 const {allowInsecurePrototypeAccess} = require('@handlebars/allow-prototype-access')
 const User = require('./models/user')
 
 const app = express()
 
-// app.engine('hbs', hbs.engine)
 app.engine('hbs', expressHandlebars({
     handlebars: allowInsecurePrototypeAccess(Handlebars),
     defaultLayout: 'main',
@@ -38,6 +38,7 @@ app.use('/', homeRoutes)
 app.use('/add', addRoutes)
 app.use('/courses', coursesRoutes)
 app.use('/cart', cartRoutes)
+app.use('/order', orderRoutes)
 
 const PORT = process.env.PORT || 3000
 
@@ -61,7 +62,7 @@ async function start() {
         app.listen(PORT, () => {
             console.log(`Server is running on port ${PORT}`)
         })
-    } catch (e) {
+    } catch(e) {
         console.log(e)
     }
 }
