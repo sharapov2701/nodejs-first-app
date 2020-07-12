@@ -13,9 +13,12 @@ const addRoutes = require('./routes/add')
 const orderRoutes = require('./routes/order')
 const coursesRoutes = require('./routes/courses')
 const authRoutes = require('./routes/auth')
+const profileRoutes = require('./routes/profile')
 const {allowInsecurePrototypeAccess} = require('@handlebars/allow-prototype-access')
 const varMiddleware = require('./middleware/variables')
 const userMiddleware = require('./middleware/user')
+const errorHandler = require('./middleware/error')
+const fileMiddleware = require('./middleware/file')
 const keys = require('./keys')
 
 const app = express()
@@ -42,6 +45,7 @@ app.use(session({
     saveUninitialized: false,
     store
 }))
+app.use(fileMiddleware.single('avatar'))
 app.use(csrf())
 app.use(flash())
 app.use(varMiddleware)
@@ -53,6 +57,8 @@ app.use('/courses', coursesRoutes)
 app.use('/cart', cartRoutes)
 app.use('/order', orderRoutes)
 app.use('/auth', authRoutes)
+app.use('/profile', profileRoutes)
+app.use(errorHandler)
 
 const PORT = process.env.PORT || 3000
 
